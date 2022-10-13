@@ -1,0 +1,40 @@
+﻿@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Send Mail";
+}
+<div class="row">
+    <div class="col-5 m-auto shadow p-2">
+        <form id="email-form">
+            @*<div class="mb-3">
+                <label for="exampleInputHost" class="form-label">Host</label>
+                <input type="email" class="form-control" id="hostName" name="host" aria-describedby="emailHelp">
+
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputEmail2" class="form-label">From</label>
+                <input type="text" class="form-control" id="exampleInputEmail2" name="from" aria-describedby="emailHelp">
+
+            </div>*@
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">To</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" name="to" aria-describedby="emailHelp">
+
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputtext" class="form-label">Subject</label>
+                <textarea class="form-control" placeholder="Leave a comment here" name="body" id="floatingTextarea"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="formFile" class="form-label">Default file input example</label>
+                <input class="form-control" type="file" id="formFile" name="attachment" multiple>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Send</button>
+        </form>
+    </div>
+    <div class="col-8 m-auto">
+        <img src="" id="show-img" />
+    </div>
+</div>
+
+<script src="/js/mail-content.js"></script>
