@@ -1,5 +1,6 @@
 ﻿using EmailApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
@@ -9,6 +10,10 @@ namespace EmailApp.Controllers
     public class HomeController : Controller
     {
         private IConfiguration Configuration;
+        private int i;
+
+        public object Files { get; private set; }
+
         public HomeController(IConfiguration _configuration)
         {
             Configuration = _configuration;
@@ -26,15 +31,18 @@ namespace EmailApp.Controllers
         [HttpPost]
         public IActionResult SendMail()
         {
-            //Console.WriteLine(Request.Form["to"]);
-            //Console.WriteLine(Request.Form["body"]);
-            var attachmentFile = Request.Form.Files.GetFile("attachment");
-            var byteArray = getByteArrayFromFile(attachmentFile);
             string from = "poojavishal6699@gmail.com";
             MailMessage mail = new MailMessage(from, Request.Form["to"].ToString());
             mail.Subject = "Test Mail";
+            var files = Request.Form.Files.GetFiles("attachment");
             mail.Body = Request.Form["body"].ToString();
-            mail.Attachments.Add(new Attachment(new MemoryStream(byteArray), attachmentFile.FileName));
+            
+            for (int i = 0; i < files.Count; i++)
+            {
+                var bytes = getByteArrayFromFile(files[i]);
+
+                mail.Attachments.Add(new Attachment(new MemoryStream(bytes), files[i].FileName));
+            }
 
             SmtpClient smtp = new SmtpClient();
             smtp.Host = "smtp.gmail.com";
@@ -44,11 +52,14 @@ namespace EmailApp.Controllers
             smtp.Credentials = networkCredential;
             smtp.Port = 587;
             smtp.Send(mail);
-            Console.WriteLine(Request.Form["attachment"]);
+            //Console.WriteLine(Request.Form["attachment"]);
 
 
             return new JsonResult("Done");
         }
+
+      
+
         private byte[] getByteArrayFromFile(IFormFile file)
         {
             using (var target = new MemoryStream())
